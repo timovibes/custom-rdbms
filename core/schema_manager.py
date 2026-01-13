@@ -138,3 +138,6 @@ class SchemaManager:
                     raise ValueError(
                         f"Column '{col}' expects Bool, got {type(value).__name__}"
                     )
+        if 'name' in row:
+            if str(row['name']).isdigit():
+                raise ValueError("Data Integrity Error: 'name' cannot be a number")
