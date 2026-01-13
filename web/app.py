@@ -228,29 +228,24 @@ def index():
 @app.route('/insert', methods=['POST'])
 def insert():
     try:
-        #extract form data
+        # Extract form data
         user_id = int(request.form['id'])
         name = request.form['name']
-        email = request.form['email']      
-
-        #inserts into database
+        email = request.form['email']
+        
+        # Insert into database
         executor.insert_row('users', {
             'id': user_id,
             'name': name,
             'email': email
         })
-        return f"""
-        <script>
-            window.location.href = '/?message=User "{name}" added successfully!';
-        </script>
-        """       
 
+        # USE REDIRECT INSTEAD OF SCRIPT TAGS
+        return redirect(url_for('index', message=f'User "{name}" added successfully!'))
+        
     except Exception as e:
-        return f"""
-        <script>
-            window.location.href = '/?error={str(e)}';
-        </script>
-        """
+        # Redirect with the error message in the URL
+        return redirect(url_for('index', error=str(e)))
 
 
 @app.route('/data', methods=['GET'])
