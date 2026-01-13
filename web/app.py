@@ -189,20 +189,19 @@ HTML_TEMPLATE = """
 
 def initialize_demo_table():
     try:
-        #checks if table exists
+        # 1. Check if table exists
         schema.get_table_schema('users')
+        # 2. CRITICAL: If it exists, load the existing data into the Index!
+        executor.load_table_index('users')
+        print("Existing 'users' table found and Index populated")
     except ValueError:
-        #if the table doesn't exist it is created
+        # 3. If it doesn't exist, create it
         executor.create_table(
             'users',
-            columns={
-                'id': 'Int',
-                'name': 'String',
-                'email': 'String'
-            },
+            columns={'id': 'Int', 'name': 'String', 'email': 'String'},
             primary_key='id'
         )
-        print("✓ Initialized 'users' table")
+        print("New 'users' table created")
 
 
 @app.route('/', methods=['GET'])
